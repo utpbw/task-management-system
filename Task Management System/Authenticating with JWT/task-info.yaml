@@ -18,6 +18,69 @@ files:
   - name: test/TestUser.java
     visible: true
     learner_created: false
+  - name: src/taskmanagement/service/UserAccountService.java
+    visible: true
+    learner_created: true
+  - name: src/taskmanagement/controller/GlobalExceptionHandler.java
+    visible: true
+    learner_created: true
+  - name: src/taskmanagement/repository/TaskRepository.java
+    visible: true
+    learner_created: true
+  - name: src/taskmanagement/dto/RegistrationRequest.java
+    visible: true
+    learner_created: true
+  - name: src/taskmanagement/model/Task.java
+    visible: true
+    learner_created: true
+  - name: src/taskmanagement/controller/AccountController.java
+    visible: true
+    learner_created: true
+  - name: src/taskmanagement/security/DatabaseUserDetailsService.java
+    visible: true
+    learner_created: true
+  - name: src/taskmanagement/service/TaskService.java
+    visible: true
+    learner_created: true
+  - name: src/taskmanagement/security/SecurityConfig.java
+    visible: true
+    learner_created: true
+  - name: src/taskmanagement/dto/TaskResponse.java
+    visible: true
+    learner_created: true
+  - name: src/taskmanagement/controller/TaskController.java
+    visible: true
+    learner_created: true
+  - name: src/taskmanagement/model/TaskStatus.java
+    visible: true
+    learner_created: true
+  - name: src/taskmanagement/model/UserAccount.java
+    visible: true
+    learner_created: true
+  - name: src/taskmanagement/repository/UserAccountRepository.java
+    visible: true
+    learner_created: true
+  - name: src/taskmanagement/dto/TaskRequest.java
+    visible: true
+    learner_created: true
+  - name: src/taskmanagement/model/Token.java
+    visible: true
+    learner_created: true
+  - name: src/taskmanagement/repository/TokenRepository.java
+    visible: true
+    learner_created: true
+  - name: src/taskmanagement/service/TokenService.java
+    visible: true
+    learner_created: true
+  - name: src/taskmanagement/controller/AuthController.java
+    visible: true
+    learner_created: true
+  - name: src/taskmanagement/security/BearerTokenFilter.java
+    visible: true
+    learner_created: true
 feedback_link: https://hyperskill.org/projects/423/stages/2461/implement#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: "Thu, 28 May 2026 15:21:28 UTC"
 record: -1
