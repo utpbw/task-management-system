@@ -1,6 +1,11 @@
 package taskmanagement.controller;
 
+import taskmanagement.dto.TaskRequest;
+import taskmanagement.dto.TaskResponse;
+import taskmanagement.service.TaskService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -8,16 +13,27 @@ import java.util.List;
 @RequestMapping("/api")
 public class TaskController {
 
-    // This method only ever executes for authenticated users.
-    // Spring Security intercepts every incoming request to /api/tasks first —
-    // if the Authorization header is missing or the credentials are wrong,
-    // Security rejects the request with 401 before it even reaches this method.
-    // That means you get the 401 behaviour for free, with zero extra code here.
+    private final TaskService taskService;
+
+    public TaskController(TaskService taskService) {
+        this.taskService = taskService;
+    }
+
+    @PostMapping("/tasks")
+    public ResponseEntity<TaskResponse> createTask(
+            @Valid @RequestBody TaskRequest request,
+            Authentication authentication) {
+        var task = taskService.createTask(request, authentication.getName());
+        return ResponseEntity.ok(TaskResponse.from(task));
+    }
+
     @GetMapping("/tasks")
-    public ResponseEntity<List<Object>> getTasks() {
-        // Returns an empty list for now — tasks are added in a later stage
-        // of the course. The important thing at this stage is just that
-        // authenticated users get a 200 and unauthenticated users get a 401.
-        return ResponseEntity.ok(List.of());
+    public ResponseEntity<List<TaskResponse>> getTasks(
+            @RequestParam(required = false) String author) {
+        var tasks = taskService.getAllTasks(author)
+                .stream()
+                .map(TaskResponse::from)
+                .toList();
+        return ResponseEntity.ok(tasks);
     }
 }
