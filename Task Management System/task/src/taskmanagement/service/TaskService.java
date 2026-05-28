@@ -1,25 +1,32 @@
 package taskmanagement.service;
 
 import taskmanagement.dto.TaskRequest;
+import taskmanagement.dto.TaskResponse;
 import taskmanagement.model.Task;
 import taskmanagement.model.TaskStatus;
+import taskmanagement.repository.CommentRepository;
 import taskmanagement.repository.TaskRepository;
 import taskmanagement.repository.UserAccountRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class TaskService {
 
     private final TaskRepository taskRepository;
     private final UserAccountRepository userAccountRepository;
+    private final CommentRepository commentRepository;
 
     public TaskService(TaskRepository taskRepository,
-                       UserAccountRepository userAccountRepository) {
+                       UserAccountRepository userAccountRepository,
+                       CommentRepository commentRepository) {
         this.taskRepository = taskRepository;
         this.userAccountRepository = userAccountRepository;
+        this.commentRepository = commentRepository;
     }
 
     public Task createTask(TaskRequest request, String authorEmail) {
@@ -31,18 +38,34 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
-    public List<Task> getAllTasks(String author, String assignee) {
+    public List<TaskResponse> getAllTasks(String author, String assignee) {
         boolean hasAuthor = author != null && !author.isBlank();
         boolean hasAssignee = assignee != null && !assignee.isBlank();
+
+        List<Task> tasks;
         if (hasAuthor && hasAssignee) {
-            return taskRepository.findByAuthorIgnoreCaseAndAssigneeIgnoreCaseOrderByIdDesc(author, assignee);
+            tasks = taskRepository.findByAuthorIgnoreCaseAndAssigneeIgnoreCaseOrderByIdDesc(author, assignee);
         } else if (hasAuthor) {
-            return taskRepository.findByAuthorIgnoreCaseOrderByIdDesc(author);
+            tasks = taskRepository.findByAuthorIgnoreCaseOrderByIdDesc(author);
         } else if (hasAssignee) {
-            return taskRepository.findByAssigneeIgnoreCaseOrderByIdDesc(assignee);
+            tasks = taskRepository.findByAssigneeIgnoreCaseOrderByIdDesc(assignee);
         } else {
-            return taskRepository.findAllByOrderByIdDesc();
+            tasks = taskRepository.findAllByOrderByIdDesc();
         }
+
+        if (tasks.isEmpty()) return List.of();
+
+        List<Long> taskIds = tasks.stream().map(Task::getId).toList();
+        Map<Long, Long> counts = commentRepository.countByTaskIdIn(taskIds)
+                .stream()
+                .collect(Collectors.toMap(
+                        row -> (Long) row[0],
+                        row -> (Long) row[1]
+                ));
+
+        return tasks.stream()
+                .map(t -> TaskResponse.from(t, counts.getOrDefault(t.getId(), 0L)))
+                .toList();
     }
 
     public Task assignTask(Long taskId, String assigneeValue, String requesterEmail) {

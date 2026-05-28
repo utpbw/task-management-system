@@ -51,10 +51,6 @@ public class TaskController {
     public ResponseEntity<List<TaskResponse>> getTasks(
             @RequestParam(required = false) String author,
             @RequestParam(required = false) String assignee) {
-        var tasks = taskService.getAllTasks(author, assignee)
-                .stream()
-                .map(TaskResponse::from)
-                .toList();
-        return ResponseEntity.ok(tasks);
+        return ResponseEntity.ok(taskService.getAllTasks(author, assignee));
     }
 }
