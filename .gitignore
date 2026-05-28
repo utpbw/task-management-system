@@ -1,0 +1,22 @@
+# Gradle build output
+.gradle/
+build/
+
+# Compiled Java classes
+*.class
+
+# H2 database files — runtime data, not source code
+*.mv.db
+*.trace.db
+
+# IntelliJ IDEA project files
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# macOS metadata
+.DS_Store
+
+# Log files
+*.log
