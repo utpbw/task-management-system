@@ -4,19 +4,15 @@ import taskmanagement.model.Task;
 
 public class TaskResponse {
 
-    // Returned as a String even though the DB stores it as a Long,
-    // so the API doesn't expose database implementation details
     private String id;
     private String title;
     private String description;
-
-    // The enum's .name() gives us "CREATED" as a plain String for JSON
     private String status;
     private String author;
+    private String assignee;
 
     public TaskResponse() {}
 
-    // Static factory — converts a Task entity into a TaskResponse DTO
     public static TaskResponse from(Task task) {
         TaskResponse response = new TaskResponse();
         response.id = String.valueOf(task.getId());
@@ -24,6 +20,7 @@ public class TaskResponse {
         response.description = task.getDescription();
         response.status = task.getStatus().name();
         response.author = task.getAuthor();
+        response.assignee = task.getAssignee() == null ? "none" : task.getAssignee();
         return response;
     }
 
@@ -32,4 +29,5 @@ public class TaskResponse {
     public String getDescription() { return description; }
     public String getStatus() { return status; }
     public String getAuthor() { return author; }
+    public String getAssignee() { return assignee; }
 }

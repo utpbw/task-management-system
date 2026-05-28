@@ -23,6 +23,9 @@ public class Task {
     @Column(nullable = false)
     private String author;
 
+    @Column
+    private String assignee;
+
     public Task() {}
 
     public Long getId() { return id; }
@@ -34,4 +37,6 @@ public class Task {
     public void setStatus(TaskStatus status) { this.status = status; }
     public String getAuthor() { return author; }
     public void setAuthor(String author) { this.author = author; }
+    public String getAssignee() { return assignee; }
+    public void setAssignee(String assignee) { this.assignee = assignee; }
 }

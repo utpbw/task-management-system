@@ -6,10 +6,8 @@ import java.util.List;
 
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
-    // Returns all tasks sorted by id descending — newest task first
     List<Task> findAllByOrderByIdDesc();
-
-    // Returns tasks by a specific author, case-insensitive, newest first.
-    // Spring generates the SQL from the method name automatically.
     List<Task> findByAuthorIgnoreCaseOrderByIdDesc(String author);
+    List<Task> findByAssigneeIgnoreCaseOrderByIdDesc(String assignee);
+    List<Task> findByAuthorIgnoreCaseAndAssigneeIgnoreCaseOrderByIdDesc(String author, String assignee);
 }
