@@ -1,0 +1,84 @@
+### Variables — adjust as needed
+@host = http://localhost:8080
+@username = alice
+@password = secret123
+@token = <paste token from POST /api/auth/token response>
+@taskId = 1
+
+
+### ─── Accounts ────────────────────────────────────────────────────────────
+
+### Register a new user
+POST {{host}}/api/accounts
+Content-Type: application/json
+
+{
+  "username": "{{username}}",
+  "password": "{{password}}"
+}
+
+
+### ─── Auth ────────────────────────────────────────────────────────────────
+
+### Get a Bearer token (Basic auth — run this, copy token into @token above)
+POST {{host}}/api/auth/token
+Authorization: Basic {{username}} {{password}}
+
+
+### ─── Tasks ───────────────────────────────────────────────────────────────
+
+### Create a task
+POST {{host}}/api/tasks
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Fix login bug",
+  "description": "Users can't log in with special characters in their password."
+}
+
+### List all tasks
+GET {{host}}/api/tasks
+Authorization: Bearer {{token}}
+
+### List tasks filtered by author
+GET {{host}}/api/tasks?author={{username}}
+Authorization: Bearer {{token}}
+
+### List tasks filtered by assignee
+GET {{host}}/api/tasks?assignee=bob
+Authorization: Bearer {{token}}
+
+### Assign a task to a user
+PUT {{host}}/api/tasks/{{taskId}}/assign
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "assignee": "bob"
+}
+
+### Update task status
+PUT {{host}}/api/tasks/{{taskId}}/status
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "status": "IN_PROGRESS"
+}
+
+
+### ─── Comments ────────────────────────────────────────────────────────────
+
+### Add a comment to a task
+POST {{host}}/api/tasks/{{taskId}}/comments
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "text": "Reproduced on Safari — looks like URL encoding is the culprit."
+}
+
+### List comments for a task
+GET {{host}}/api/tasks/{{taskId}}/comments
+Authorization: Bearer {{token}}
