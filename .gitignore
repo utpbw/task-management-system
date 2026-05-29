@@ -1,22 +1,30 @@
-# Gradle build output
+# Build output
 .gradle/
 build/
-
-# Compiled Java classes
 *.class
 
-# H2 database files — runtime data, not source code
+# IDE
+.idea/
+
+# Hyperskill infrastructure (root only; task/build.gradle is kept)
+/build.gradle
+/settings.gradle
+
+# All YAML / YML metadata and config
+*.yaml
+*.yml
+
+# Hyperskill task HTML descriptions
+**/*.html
+
+# Gradle wrapper binaries
+gradlew
+gradlew.bat
+gradle/
+
+# H2 database files
 *.mv.db
 *.trace.db
 
-# IntelliJ IDEA project files
-.idea/
-*.iml
-*.iws
-*.ipr
-
-# macOS metadata
-.DS_Store
-
-# Log files
-*.log
+# Claude Code tooling
+.claude/
